@@ -144,8 +144,8 @@ func (a *AIOCDevice) Close() error {
 
 // Read reads a 32-bit value from a register
 func (a *AIOCDevice) Read(address Register) (uint32, error) {
-	// Prepare request: [0, NONE, address, 0x00000000]
-	request := make([]byte, 8)
+	// Prepare request: [0, NONE, address, 0x00000000] - 7 bytes total
+	request := make([]byte, 7)
 	request[0] = 0
 	request[1] = uint8(CmdNONE)
 	request[2] = uint8(address)
@@ -172,7 +172,7 @@ func (a *AIOCDevice) Read(address Register) (uint32, error) {
 
 // Write writes a 32-bit value to a register
 func (a *AIOCDevice) Write(address Register, value uint32) error {
-	data := make([]byte, 8)
+	data := make([]byte, 7)
 	data[0] = 0
 	data[1] = uint8(CmdWRITESTROBE)
 	data[2] = uint8(address)
@@ -186,7 +186,7 @@ func (a *AIOCDevice) Write(address Register, value uint32) error {
 
 // SendCommand sends a command to the device
 func (a *AIOCDevice) SendCommand(cmd Command) error {
-	data := make([]byte, 8)
+	data := make([]byte, 7)
 	data[0] = 0
 	data[1] = uint8(cmd)
 	data[2] = 0x00
